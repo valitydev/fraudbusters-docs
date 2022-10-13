@@ -57,5 +57,6 @@ nav:
       - Аналитика: "docs/use-fraud-analytics.md"
       - Язык: "docs/use-fraud-language.md"
       - Тестирование: "docs/use-fraud-tests.md"
+      - Ролевая модель: "docs/roles.md"
   - Release Notes:
         - 01.02.2017: "docs/use-fraud-language.md"
