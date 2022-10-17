@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<title>Архитектура - FraudBusters | docs</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<meta name="generator" content="mkdocs-1.4.1, mkdocs-gitbook-1.0.7">
+
+<link rel="shortcut icon" href="../../images/favicon.ico" type="image/x-icon">
+<meta name="HandheldFriendly" content="true"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta rel="next" href="" />
+<link href="../../css/style.min.css" rel="stylesheet"> 
+</head>
+
+<body>
+<div class="book">
+<div class="book-summary">
+
+<nav role="navigation">
+<ul class="summary">
+<li>
+<a href="../.." target="_blank" class="custom-link">FraudBusters | docs</a>
+</li>
+<li class="divider"></li>
+<li class="chapter" data-path="">
+<a href="../..">О продукте</a>
+<li class="header">Быстрый старт</li>
+
+<li>
+<a href="../free-version/" class="">Пробная версия</a>
+</li>
+
+<li>
+<a href="../simple-use-case/" class="">Простой сценарий использования</a>
+</li>
+
+<li>
+<a href="../simple-config/" class="">Первичная настройка системы</a>
+</li>
+
+<li>
+<a href="../vality-support/" class="">Комерческая поддержка от vality</a>
+</li>
+
+<li class="header">Для разработчиков</li>
+
+<li>
+<a href="./" class="active">Архитектура</a>
+</li>
+
+<li>
+<a href="../api/" class="">Протоколы взаимодействия</a>
+</li>
+
+<li>
+<a href="../community/" class="">Community</a>
+</li>
+
+<li class="header">Для офицеров безопасности</li>
+
+<li>
+<a href="../use-fraud-analytics/" class="">Аналитика</a>
+</li>
+
+<li>
+<a href="../use-fraud-language/" class="">Язык</a>
+</li>
+
+<li>
+<a href="../use-fraud-tests/" class="">Тестирование</a>
+</li>
+
+<li>
+<a href="../roles/" class="">Ролевая модель</a>
+</li>
+
+<li class="header">Release Notes</li>
+
+<li>
+<a href="../use-fraud-language/" class="">01.02.2017</a>
+</li>
+
+<li class="divider"></li>
+
+
+
+<li><a href="http://www.mkdocs.org">
+Published with MkDocs
+</a></li>
+
+<li><a href="https://github.com/GitbookIO/theme-default">
+Theme by GitBook
+</a></li>
+</ul>
+
+</nav>
+
+</div> <!-- end of book-summary -->
+
+<div class="book-body">
+<div class="body-inner">
+<div class="book-header" role="navigation">
+
+<!-- Title -->
+<h1>
+<i class="fa fa-circle-o-notch fa-spin"></i>
+<a href="." ></a>
+</h1>
+
+</div> <!-- end of book-header -->
+
+<div class="page-wrapper" tabindex="-1" role="main">
+<div class="page-inner">
+
+<section class="normal markdown-section">
+
+
+
+<h1 id="_1">Архитектура</h1>
+<p><img alt="svg" src="../img/full-scheme.svg" /></p></p>
+<p>При разработке используется микросервисный подход. Зоны ответственности разделены по функциональным блокам. 
+Основной задачей при построении системы было обеспечить максимальный уровень доступности и возможность 
+горизонтального масштабирования. Для этого критически важные сервисы, 
+были реализованы на основе паттерна <strong>event-sourcing</strong>. В качестве <strong>event-store</strong> был выбран <a href="https://kafka.apache.org/"><strong>kafka-cluster</strong></a>. 
+А в качестве БД выбран <a href="https://riak.com/"><strong>basho-riak</strong></a> и <a href="https://clickhouse.com/"><strong>clickhouse</strong></a>,
+которые также предоставляют высокий уровень доступности при хорошей производительности.</p>
+<h4 id="_2">Интерфейсы взаимодействия</h4>
+<p>Для начального погружения необходимо рассмотреть интерфейсы взаимодействия с системой. Это сервисы 
+<a href="https://github.com/valitydev/fraudbusters-ui">fraudbusters-ui</a> и <a href="https://github.com/valitydev/fraudbusters-api">fraudbusters-api</a>.</p>
+<p><strong>fraudbusters-ui</strong> - это пользовательский интерфейс, который позволяет создавать и управлять правилами, 
+черными и белыми списками, группировать и привязывать правила к разным магазинам. 
+Также присутствует все необходимое для аналитики и тестирования гипотиз. Для подробного изучение возможностей 
+можно воспользоваться <a href="../free-version/">пробной версией</a> или обратиться к <a href="../vality-support/">vality.dev</a> за поддержкой.</p>
+<p><strong>fraudbusters-api</strong> - это сервис реализующий протокол взаимодействия с системой из вашего процессинга. 
+Подробно о спецификации можно узнать в разделе <a href="../api/">Протоколы</a>. 
+Сервис без состояния легко масштабируется увеличением количества инстансов.</p>
+<p>На следующе этапе необходимо ознакомиться со способом авторизации в системе. 
+За нее отвечает свободно распространяемый сервис <a href="https://www.keycloak.org/">keycloak</a>, 
+который позволяет настроить SSO, AD и LDAP.
+На базе него реализована следующая ролевая <a href="../roles/">модель</a>.</p>
+<h4 id="_3">Критически важные сервисы</h4>
+<p><strong>fraudbusters</strong> - это <a href="https://github.com/valitydev/fraudbusters">ядро системы</a>, занимается управлением оценки транзакции.
+В рамках данного сервиса реализуются интерфейсы сгенерированные после сборки <a href="https://github.com/valitydev/fraudo"><strong>Fraudo</strong></a>.
+Взаимодействует с <strong>clickhouse</strong> для сборки агрегатов, с <strong>wb-list-manager</strong> для определения нахождения в списках,
+с <strong>columbus</strong> для определения местоположения по IP адресу и <strong>trusted-token-manager</strong> для определения доверия к покупателю.
+Сервис разработан так, чтобы максимально быстро и просто расширять систему новыми функциями. 
+Для этого необходимо расширить язык и реализовать сервис для новой функциональности.</p>
+<p>Далее необходимо рассмотреть уже упомянутые сервисы, реализующие конкретные функции оценки транзакции.</p>
+<p><strong>cloumbus</strong> - <a href="https://github.com/valitydev/columbus">сервис</a>, определяющий местоположение по IP - адресу.</p>
+<p><strong>wblist-manager</strong> - <a href="https://github.com/valitydev/wb-list-manager">сервис</a>, 
+предоставляющий возможность создавать записи в черных, белых и серых списках. Сервис слушает команды из 
+<strong>fraudbusters-management</strong> и создает записи в списках в базе <strong>riak</strong>, по результату отправляет подтверждение в
+<strong>fraudbusters-management</strong> о результате создания, что позволяет поддерживать <strong>eventually-consistent</strong> для клиента.</p>
+<p><strong>trusted-token-manager</strong> - <a href="https://github.com/valitydev/trusted-tokens-manager">сервис</a>, 
+собирающий статистику операций из <strong>event-store</strong> и предоставляющий гибкий <a href="https://github.com/valitydev/trusted-tokens-proto">интерфейс</a>
+для определения доверенного плательщика.</p>
+<h4 id="_4">Вспомогательные сервисы</h4>
+<p>Также реализован ряд сервисов для вспомогательных операций и аналитики.</p>
+<p><strong>fraudbusters-management</strong> - backend <a href="https://github.com/valitydev/fraudbusters-management">сервис</a> управления всей системой.
+Через него проходят все запросы от UI, а также запросы на управление сущностями системы, такими как шаблоны, группы и связи.
+Подробное описание методов можно посмотреть в <a href="https://valitydev.github.io/swag-fraudbusters-management/">спецификации</a>.</p>
+<p>Создание необходимых для функционирования сущностей (шаблонов, групп, связей и записей в черных/белых списках)
+производится методом отправки соответствующей <a href="https://github.com/valitydev/fraudbusters-proto/blob/master/proto/fraudbusters.thrift#L40">команды</a>
+через event-store (kafka) в ядро системы <strong>fraudbusters</strong> или в <strong>wb-list-manager</strong>.</p>
+<p><strong>fraudbusters-notificator</strong> - <a href="https://github.com/valitydev/fraudbusters-notificator">сервис</a>, управляющий 
+запланированными операциями по сбору и отправке оповещений. На данный момент реализован канал отправки по почте, 
+но сама реализация подразумевает быстрое расширение под другие каналы.</p>
+<p><strong>fraudbusters-warehouse</strong> - <a href="https://github.com/valitydev/fraudbusters-warehouse">сервис</a>, 
+отвечающий за аналитические запросы в <strong>clickhouse</strong>. Реализует следующий <a href="https://github.com/valitydev/fraudbusters-warehouse-proto">протокол</a>.</p>
+
+
+</section>
+
+</div> <!-- end of page-inner -->
+</div> <!-- end of page-wrapper -->
+
+</div> <!-- end of body-inner -->
+
+</div> <!-- end of book-body -->
+<script src="../../js/main.js"></script>
+<script src="../../js/gitbook.min.js"></script>
+<script src="../../js/theme.min.js"></script>
+</body>
+</html>

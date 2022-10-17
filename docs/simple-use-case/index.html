@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<title>Простой сценарий использования - FraudBusters | docs</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<meta name="generator" content="mkdocs-1.4.1, mkdocs-gitbook-1.0.7">
+
+<link rel="shortcut icon" href="../../images/favicon.ico" type="image/x-icon">
+<meta name="HandheldFriendly" content="true"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta rel="next" href="" />
+<link href="../../css/style.min.css" rel="stylesheet"> 
+</head>
+
+<body>
+<div class="book">
+<div class="book-summary">
+
+<nav role="navigation">
+<ul class="summary">
+<li>
+<a href="../.." target="_blank" class="custom-link">FraudBusters | docs</a>
+</li>
+<li class="divider"></li>
+<li class="chapter" data-path="">
+<a href="../..">О продукте</a>
+<li class="header">Быстрый старт</li>
+
+<li>
+<a href="../free-version/" class="">Пробная версия</a>
+</li>
+
+<li>
+<a href="./" class="active">Простой сценарий использования</a>
+</li>
+
+<li>
+<a href="../simple-config/" class="">Первичная настройка системы</a>
+</li>
+
+<li>
+<a href="../vality-support/" class="">Комерческая поддержка от vality</a>
+</li>
+
+<li class="header">Для разработчиков</li>
+
+<li>
+<a href="../architecture/" class="">Архитектура</a>
+</li>
+
+<li>
+<a href="../api/" class="">Протоколы взаимодействия</a>
+</li>
+
+<li>
+<a href="../community/" class="">Community</a>
+</li>
+
+<li class="header">Для офицеров безопасности</li>
+
+<li>
+<a href="../use-fraud-analytics/" class="">Аналитика</a>
+</li>
+
+<li>
+<a href="../use-fraud-language/" class="">Язык</a>
+</li>
+
+<li>
+<a href="../use-fraud-tests/" class="">Тестирование</a>
+</li>
+
+<li>
+<a href="../roles/" class="">Ролевая модель</a>
+</li>
+
+<li class="header">Release Notes</li>
+
+<li>
+<a href="../use-fraud-language/" class="">01.02.2017</a>
+</li>
+
+<li class="divider"></li>
+
+
+
+<li><a href="http://www.mkdocs.org">
+Published with MkDocs
+</a></li>
+
+<li><a href="https://github.com/GitbookIO/theme-default">
+Theme by GitBook
+</a></li>
+</ul>
+
+</nav>
+
+</div> <!-- end of book-summary -->
+
+<div class="book-body">
+<div class="body-inner">
+<div class="book-header" role="navigation">
+
+<!-- Title -->
+<h1>
+<i class="fa fa-circle-o-notch fa-spin"></i>
+<a href="." ></a>
+</h1>
+
+</div> <!-- end of book-header -->
+
+<div class="page-wrapper" tabindex="-1" role="main">
+<div class="page-inner">
+
+<section class="normal markdown-section">
+
+
+
+<h1 id="_1">Простой сценарий использования</h1>
+<p>Необходимо <a href="../simple-config/">преднастроить</a> систему для запуска теста</p>
+<h4 id="_2">Схема взаимодействия:</h4>
+<p><img alt="svg" src="../img/fraudbusters sequence diagram.svg" /></p></p>
+<h4 id="_3">Настройка правил в системе:</h4>
+<ol>
+<li>Идем в пользовательский интерфейс <code>localhost:8989</code></li>
+<li>Авторизуемся под настроенным пользователем</li>
+<li>Идем в <strong>Templates</strong> -&gt; <strong>Create template</strong> </li>
+<li>Создаем template <em>name</em>: <code>test</code> <em>template</em>: <code>rule:test:amount() &gt; 100 -&gt; decline;</code></li>
+<li>Идем в Reference -&gt; Create reference </li>
+<li>Создаем связь <em>Template id</em>: <code>test</code> <em>Party id</em>: <code>partyTest</code> <em>Shop id</em>: <code>shopTest</code></li>
+</ol>
+<h4 id="_4">Проверка срабатывания правил:</h4>
+<ol>
+<li>Дальше можно воспользоваться специальным тестовым <a href="https://github.com/rbkmoney/fraudbusters-examples">сервисом</a> для эмуляции системы платежей</li>
+<li>Увидеть результаты можно в <strong>Historical data</strong> -&gt; <strong>Inspect result</strong></li>
+<li>Также после прохождения теста появятся данные на странице <strong>Analytics</strong></li>
+</ol>
+
+
+</section>
+
+</div> <!-- end of page-inner -->
+</div> <!-- end of page-wrapper -->
+
+</div> <!-- end of body-inner -->
+
+</div> <!-- end of book-body -->
+<script src="../../js/main.js"></script>
+<script src="../../js/gitbook.min.js"></script>
+<script src="../../js/theme.min.js"></script>
+</body>
+</html>
