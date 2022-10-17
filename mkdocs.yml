@@ -1,6 +1,6 @@
 docs_dir: "content"
 site_name: "FraudBusters | docs"
-#repo_url: https://github.com/valitydev/fraudo
+#repo_url: https://github.com/valitydev/fraudbusters-docs
 #edit_uri: ""
 theme:
   name: gitbook
